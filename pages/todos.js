@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import AllTodos from "../components/allTodos";
 const axios = require("axios");
 
 const Todos = () => {
@@ -10,7 +11,10 @@ const Todos = () => {
   };
 
   const fetching = async () => {
-    const res = await axios.get("http://localhost:3000/api/todos", headersConfig);
+    const res = await axios.get(
+      "http://localhost:3000/api/todos",
+      headersConfig
+    );
     const data = await res;
 
     // si erreur avec le JWT
@@ -28,6 +32,7 @@ const Todos = () => {
 
   useEffect(() => {
     fetching();
+    console.log(allTodos);
   }, []);
 
   // va contenir la todo a ajouter
@@ -40,6 +45,11 @@ const Todos = () => {
 
   const addTodo = async (e) => {
     e.preventDefault();
+
+    // ajout de la todo à la liste qui affichage les todos au frontend et ajout de cette todo en fond dans MongoDB
+    setAllTodos([...allTodos, todo]);
+
+    console.log(allTodos);
 
     const res = await axios.post(
       "http://localhost:3000/api/create-todo",
@@ -63,9 +73,7 @@ const Todos = () => {
     }
 
     if (!data.data.message) {
-      setAllTodos([...allTodos, data.data]);
-      console.log(data);
-      console.log(allTodos);
+      setAllTodos(data.data);
     }
   };
 
@@ -73,6 +81,30 @@ const Todos = () => {
     <div>
       {loading && <p>Loading...</p>}
       {errorMessage && <p>{errorMessage}</p>}
+      {allTodos.length === 0 && (
+        <div>
+          <h1 className="text-2xl sm:text-4xl font-bold text-center">
+            Here is your Todo List {localStorage.getItem("userName")}
+          </h1>
+          <form className="flex flex-col items bg-red w-full p-10 gap-y-3 sm:max-w-screen-md mx-auto">
+            <label className="text-violet-700 font-bold">Add Todo</label>
+            <input
+              type="text"
+              name="todo"
+              value={todo}
+              placeholder="Add new todo"
+              onChange={(e) => setTodo(e.target.value)}
+              className="border-2 border-violet-700 p-1 focus:outline-0"
+            />
+            <button
+              onClick={addTodo}
+              className="bg-violet-700 rounded-2xl py-1 px-7 w-fit text-white"
+            >
+              Add
+            </button>
+          </form>
+        </div>
+      )}
       {allTodos.length > 0 && (
         <div>
           <h1 className="text-2xl sm:text-4xl font-bold text-center">
@@ -95,16 +127,7 @@ const Todos = () => {
               Add
             </button>
           </form>
-          {allTodos.length > 0 && (
-            <div>
-              <h2>TODOS</h2>
-              {allTodos.map((x) => (
-                <div key={x._id}>
-                  <p>{x.title}</p>
-                </div>
-              ))}
-            </div>
-          )}
+          <AllTodos allTodos={allTodos} setAllTodos={setAllTodos} />
         </div>
       )}
     </div>

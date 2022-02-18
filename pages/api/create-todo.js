@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     // todo envoyé par l'utilisateur
     const { todo } = req.body;
 
-    console.log(todo)
+    console.log(todo);
 
     // trouve l'utilisateur
     const user = await db
@@ -63,10 +63,9 @@ export default async function handler(req, res) {
 
       //   si aucune erreur, on renvoit toutes les todos au front
       if (userTodos) {
-        return res.status(200).json(userTodos[0]);
+        console.log("recuperation de toutes les todos");
+        return res.status(200).json(userTodos);
       }
-
-      return res.status(200).json(newTodo);
     }
   } catch (err) {
     console.log(err);
