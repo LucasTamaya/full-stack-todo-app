@@ -4,13 +4,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 export default async function handler(req, res) {
-  // connexion a MongoDB
+  // connexion à MongoDB
   const { db } = await connectToDatabase();
 
-  // middleware cors
+  // middleware CORS
   await nextCors(req, res);
 
-  const { email, password } = req.body;
+  // récupère les données de l'utilisateur
+  const { email, name, password } = req.body;
 
   //   vérifie que l'utilisateur n'existe pas dans MongoDB
   const existingUser = await db
@@ -18,33 +19,16 @@ export default async function handler(req, res) {
     .find({ email: email })
     .toArray();
 
-  // si utilisateur existant, on vérifie son pwd
+    // si utilisateur existant
   if (existingUser.length >= 1) {
     console.log("utilisateur existant");
-    // compare les mots de passe hashé
-    try {
-      const isMatch = await bcrypt.compare(
-        password,
-        existingUser[0].password
-      );
-      // création du JWT avec l'email
-      const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
-      return res.status(200).json(accessToken);
-    } catch (err) {
-      console.log("erreur ici", err);
-      return res.send({ message: "Login error" });
-    }
+    return res.send({ message: "Existing user error" });
   }
 
-  //   si utilisateur non existant
+//   si utilisateur non existant
   if (existingUser.length < 1) {
-    console.log("utilisateur non existant");
-    return res.send({ message: "Login error" });
-  }
-}
-
-/*  
-// hash du password avec bcrypt
+    console.log("nouvel utilisateur");
+    // hash du password avec bcrypt
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
     // enregistre le nouvel utilisateur dans MongoDB
@@ -53,8 +37,9 @@ export default async function handler(req, res) {
       name: name,
       password: hashPassword,
     });
-    // création du JWT (Json Web Token) avec l'email
+    // création du JWT (Json Web Token) avec l'email 
     const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
     console.log("access token", accessToken);
     res.status(200).json(accessToken);
-    */
+  }
+}
