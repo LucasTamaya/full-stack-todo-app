@@ -35,7 +35,7 @@ export default function Login() {
       localStorage.setItem("userName", data.data.userName);
 
       // on redirige l'utilisateur vers la page des Todos
-      router.push("/todos", "/");
+      router.push("/");
     }
   }
   return (

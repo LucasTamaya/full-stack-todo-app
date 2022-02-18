@@ -40,7 +40,7 @@ export default function Register() {
       // enregistre le nom de l'utilisateur aussi
       localStorage.setItem("userName", data.data.userName);
       // on redirige l'utilisateur vers la page des Todos
-      router.push("/todos", "/");
+      router.push("/");
     }
   }
   return (
