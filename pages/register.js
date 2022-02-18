@@ -36,7 +36,9 @@ export default function Register() {
     if (!data.data.message) {
       setLoading(false);
       // enregistre le JWT dans le local storage
-      localStorage.setItem("accessToken", data.data);
+      localStorage.setItem("accessToken", data.data.accessToken);
+      // enregistre le nom de l'utilisateur aussi
+      localStorage.setItem("userName", data.data.userName);
       // on redirige l'utilisateur vers la page des Todos
       router.push("/todos", "/");
     }

@@ -40,6 +40,6 @@ export default async function handler(req, res) {
     // création du JWT (Json Web Token) avec l'email 
     const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
     console.log("access token", accessToken);
-    res.status(200).json(accessToken);
+    res.status(200).send({accessToken: accessToken, userName: name});
   }
 }

@@ -18,21 +18,27 @@ export default async function handler(req, res) {
     .find({ email: email })
     .toArray();
 
-  // si utilisateur existant, on vérifie son pwd
+  // si utilisateur existant
   if (existingUser.length >= 1) {
     console.log("utilisateur existant");
-    // compare les mots de passe hashé
-    try {
-      const isMatch = await bcrypt.compare(
-        password,
-        existingUser[0].password
-      );
+
+    // on vérifie les mots de passe hashé
+    const isMatch = await bcrypt.compare(password, existingUser[0].password);
+
+    // si erreur avec le pwd
+    if (!isMatch) {
+      console.log("mot de passe incorrect");
+      return res.send({ message: "Login error" });
+    }
+
+    // si aucune erreur avec le pwd
+    if (isMatch) {
+      // récupère le nom de l'utilisateur
+      const name = existingUser[0].name;
+
       // création du JWT avec l'email
       const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
-      return res.status(200).json(accessToken);
-    } catch (err) {
-      console.log("erreur ici", err);
-      return res.send({ message: "Login error" });
+      return res.status(200).send({accessToken: accessToken, userName: name});
     }
   }
 
@@ -42,19 +48,3 @@ export default async function handler(req, res) {
     return res.send({ message: "Login error" });
   }
 }
-
-/*  
-// hash du password avec bcrypt
-    const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash(password, salt);
-    // enregistre le nouvel utilisateur dans MongoDB
-    const newUser = await db.collection("users").insertOne({
-      email: email,
-      name: name,
-      password: hashPassword,
-    });
-    // création du JWT (Json Web Token) avec l'email
-    const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
-    console.log("access token", accessToken);
-    res.status(200).json(accessToken);
-    */
