@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import AllTodos from "../components/allTodos";
+import ErrorMessage from "../components/ErrorMessage";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
+import { useRouter } from "next/router";
 const axios = require("axios");
+
 
 const Todos = () => {
   // header avec le JWT pour les requête vers l'api
@@ -11,6 +14,9 @@ const Todos = () => {
       "x-access-token": localStorage.getItem("accessToken"),
     },
   };
+
+  // faire les redirections nécessaires
+  const router = useRouter()
 
   const fetching = async () => {
     const res = await axios.get(
@@ -21,6 +27,7 @@ const Todos = () => {
 
     // si erreur avec le JWT
     if (data.data.message === "JWT error") {
+      router.reload(window.location.pathname)
       setErrorMessage("Error, you must be connected");
       setLoading(false);
     }
@@ -65,6 +72,7 @@ const Todos = () => {
 
     if (data.data.message === "JWT error") {
       setErrorMessage("Error, you must be connected");
+      router
     }
 
     if (data.data.message === "Fetch error") {
@@ -129,7 +137,7 @@ const Todos = () => {
         </div>
       )}
       {loading && <Loading />}
-      {errorMessage && <p>{errorMessage}</p>}
+      {errorMessage && <ErrorMessage message={errorMessage}/>}
     </div>
   );
 };

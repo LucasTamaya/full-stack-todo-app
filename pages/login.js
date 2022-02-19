@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 const axios = require("axios");
 
 export default function Login() {
@@ -12,9 +14,11 @@ export default function Login() {
   const router = useRouter();
 
   async function handleForm(e) {
+    e.preventDefault();
+
     setLoading(true);
 
-    e.preventDefault();
+    setErrorMessage("")
 
     const res = await axios.post("http://localhost:3000/api/auth/login", {
       email: email,
@@ -61,7 +65,7 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <input
-            className="bg-violet-700 px-3 m-2 py-1 rounded-sm text-white font-semibold"
+            className="bg-violet-700 px-3 m-2 py-1 rounded-sm text-white font-semibold cursor-pointer"
             type="submit"
             onClick={handleForm}
             value="Login"
@@ -69,17 +73,13 @@ export default function Login() {
         </form>
         <p className="text-sm">
           You don't have an account yet ?
-          <span className="text-violet-700 font-bold">
-            <Link href="/login">Register</Link>
+          <span className="text-violet-700 font-bold ml-1">
+            <Link href="/register">Register</Link>
           </span>
         </p>
       </div>
-      {loading && <p>Loading ...</p>}
-      {errorMessage && (
-        <p className="text-red-500 text-xl text-center font-bold border border-red-500 w-fit">
-          {errorMessage}
-        </p>
-      )}
+      {loading && <Loading />}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );
 }

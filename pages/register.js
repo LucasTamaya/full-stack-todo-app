@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 const axios = require("axios");
 
 export default function Register() {
@@ -18,6 +19,7 @@ export default function Register() {
   async function handleForm(e) {
     e.preventDefault();
     setLoading(!loading);
+    setErrorMessage("");
     const res = await axios.post("http://localhost:3000/api/auth/register", {
       email: email,
       name: name,
@@ -74,20 +76,21 @@ export default function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <input
-            className="bg-violet-700 px-3 m-2 py-1 rounded-sm text-white font-semibold"
+            className="bg-violet-700 px-3 m-2 py-1 rounded-sm text-white font-semibold cursor-pointer"
             type="submit"
             onClick={handleForm}
             value="Register"
           />
         </form>
-        <p className="text-sm">You already have an account ? <span className="text-violet-700 font-bold"><Link href="/login">Login</Link></span></p>
+        <p className="text-sm">
+          You already have an account ?{" "}
+          <span className="text-violet-700 font-bold">
+            <Link href="/login">Login</Link>
+          </span>
+        </p>
       </div>
       {loading && <Loading />}
-      {errorMessage && (
-        <p className="text-red-500 text-xl text-center font-bold border border-red-500 w-fit">
-          {errorMessage}
-        </p>
-      )}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );
 }
