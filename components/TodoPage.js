@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 const axios = require("axios");
 
 
-const Todos = () => {
+const TodoPage = () => {
   // header avec le JWT pour les requête vers l'api
   const headersConfig = {
     headers: {
@@ -142,4 +142,4 @@ const Todos = () => {
   );
 };
 
-export default Todos;
+export default TodoPage;
