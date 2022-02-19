@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import AllTodos from "../components/allTodos";
+import Header from "../components/Header";
+import Loading from "../components/Loading";
 const axios = require("axios");
 
 const Todos = () => {
@@ -46,9 +48,6 @@ const Todos = () => {
   const addTodo = async (e) => {
     e.preventDefault();
 
-    // ajout de la todo à la liste qui affichage les todos au frontend et ajout de cette todo en fond dans MongoDB
-    setAllTodos([...allTodos, todo]);
-
     console.log(allTodos);
 
     const res = await axios.post(
@@ -79,8 +78,7 @@ const Todos = () => {
 
   return (
     <div>
-      {loading && <p>Loading...</p>}
-      {errorMessage && <p>{errorMessage}</p>}
+      <Header />
       {allTodos.length === 0 && (
         <div>
           <h1 className="text-2xl sm:text-4xl font-bold text-center">
@@ -130,6 +128,8 @@ const Todos = () => {
           <AllTodos allTodos={allTodos} setAllTodos={setAllTodos} />
         </div>
       )}
+      {loading && <Loading />}
+      {errorMessage && <p>{errorMessage}</p>}
     </div>
   );
 };

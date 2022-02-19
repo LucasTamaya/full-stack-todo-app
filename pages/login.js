@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 const axios = require("axios");
 
 export default function Login() {
@@ -40,8 +41,10 @@ export default function Login() {
   }
   return (
     <div className="w-screen h-screen">
-      <h1 className="text-2xl sm:text-4xl text-center font-bold">Login</h1>
-      <div className="w-full h-4/5 flex justify-center items-center">
+      <div className="w-full h-4/5 flex flex-col justify-center items-center">
+        <h1 className="text-2xl text-violet-700 sm:text-4xl text-center font-bold mb-10">
+          Login
+        </h1>
         <form className="flex flex-col ">
           <input
             className="px-3 py-1 m-2 border border-black"
@@ -64,6 +67,12 @@ export default function Login() {
             value="Login"
           />
         </form>
+        <p className="text-sm">
+          You don't have an account yet ?
+          <span className="text-violet-700 font-bold">
+            <Link href="/login">Register</Link>
+          </span>
+        </p>
       </div>
       {loading && <p>Loading ...</p>}
       {errorMessage && (

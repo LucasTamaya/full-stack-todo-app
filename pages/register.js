@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import Loading from "../components/Loading";
 const axios = require("axios");
 
 export default function Register() {
@@ -45,8 +47,10 @@ export default function Register() {
   }
   return (
     <div className="w-screen h-screen">
-      <h1 className="text-2xl sm:text-4xl text-center font-bold">Register</h1>
-      <div className="w-full h-4/5 flex justify-center items-center">
+      <div className="w-full h-4/5 flex flex-col justify-center items-center">
+        <h1 className="text-2xl text-violet-700 sm:text-4xl text-center font-bold mb-10">
+          Register
+        </h1>
         <form className="flex flex-col ">
           <input
             className="px-3 py-1 m-2 border border-violet-700"
@@ -76,8 +80,9 @@ export default function Register() {
             value="Register"
           />
         </form>
+        <p className="text-sm">You already have an account ? <span className="text-violet-700 font-bold"><Link href="/login">Login</Link></span></p>
       </div>
-      {loading && <p>Loading ...</p>}
+      {loading && <Loading />}
       {errorMessage && (
         <p className="text-red-500 text-xl text-center font-bold border border-red-500 w-fit">
           {errorMessage}

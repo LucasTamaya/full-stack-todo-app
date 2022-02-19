@@ -30,13 +30,9 @@ const AllTodos = ({ allTodos, setAllTodos }) => {
   const updateTodo = async (todoId, doneState) => {
     //   update la todo directement du front pour la rapidité car sinon besoin de re récupérer toutes les todos etc ...
     // om map dans toutes les todos, on trouve la todo a update et on update son state avec la state inverse
-    console.log(doneState);
-    console.log("id: ", todoId);
     setAllTodos(
       allTodos.map((x) => {
-        console.log(x);
         if (x._id != todoId) {
-          console.log("je ne dois pas update la todo", x.title);
         }
         if (x._id === todoId) {
           return { ...x, done: doneState };
@@ -58,22 +54,17 @@ const AllTodos = ({ allTodos, setAllTodos }) => {
     if (data.data.message === "JWT error") {
       setErrorMessage("Error, you must be connected");
     }
-
-    // si aucune erreur, on met à jour la liste des todos
-    if (!data.data.message) {
-      console.log("data updated");
-    }
   };
 
   return (
     <div>
       {allTodos.length > 0 && (
         <div className="w-full p-10 sm:max-w-screen-md mx-auto">
-          <h2 className="text-violet-700 font-bold mb-5">TODOS</h2>
+          {/* <h2 className="text-violet-700 font-bold mb-5">TODOS</h2> */}
           {allTodos.map((x) => (
             <ul key={x._id} className="flex flex-col">
               <li
-                className={`${"border-2 p-3 border-violet-700 mb-2 flex justify-between text-violet-700"} ${
+                className={`${"border-2 p-3 border-violet-700 mb-5 flex justify-between text-violet-700 rounded"} ${
                   x.done ? "line-through" : "no-underline"
                 }`}
               >
