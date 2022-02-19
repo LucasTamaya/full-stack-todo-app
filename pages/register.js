@@ -4,6 +4,7 @@ import Link from "next/link";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 const axios = require("axios");
+const template = require("../utils/template");
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ export default function Register() {
     e.preventDefault();
     setLoading(!loading);
     setErrorMessage("");
-    const res = await axios.post("http://localhost:3000/api/auth/register", {
+    const res = await axios.post(`${template}api/auth/register`, {
       email: email,
       name: name,
       password: password,

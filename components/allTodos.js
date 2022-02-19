@@ -2,6 +2,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import { useState } from "react";
 const axios = require("axios");
+const template = require("../utils/template");
 
 const AllTodos = ({ allTodos, setAllTodos }) => {
   // const [allTodosFront, setAllTodosFront] = useState()
@@ -19,7 +20,7 @@ const AllTodos = ({ allTodos, setAllTodos }) => {
     setAllTodos(allTodos.filter((x) => x._id != todoId));
 
     const res = await axios.delete(
-      `http://localhost:3000/api/todos/${todoId}`,
+      `${template}api/todos/${todoId}`,
       headersConfig
     );
 
@@ -41,7 +42,7 @@ const AllTodos = ({ allTodos, setAllTodos }) => {
       })
     );
     const res = await axios.put(
-      `http://localhost:3000/api/todos/${todoId}`,
+      `${template}api/todos/${todoId}`,
       {
         doneState: doneState, //afin d'update l'etat, on envoit l'etat inverse (si true, on renvoit false et inversement)
       },

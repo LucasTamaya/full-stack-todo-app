@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { useRouter } from "next/router";
 const axios = require("axios");
-
+const template = require("../utils/template");
 
 const TodoPage = () => {
   // header avec le JWT pour les requête vers l'api
@@ -16,18 +16,15 @@ const TodoPage = () => {
   };
 
   // faire les redirections nécessaires
-  const router = useRouter()
+  const router = useRouter();
 
   const fetching = async () => {
-    const res = await axios.get(
-      "http://localhost:3000/api/todos",
-      headersConfig
-    );
+    const res = await axios.get(`${template}api/todos`, headersConfig);
     const data = await res;
 
     // si erreur avec le JWT
     if (data.data.message === "JWT error") {
-      router.reload(window.location.pathname)
+      router.reload(window.location.pathname);
       setErrorMessage("Error, you must be connected");
       setLoading(false);
     }
@@ -58,7 +55,7 @@ const TodoPage = () => {
     console.log(allTodos);
 
     const res = await axios.post(
-      "http://localhost:3000/api/create-todo",
+      `${template}api/create-todo`,
       {
         todo: todo,
       },
@@ -72,7 +69,7 @@ const TodoPage = () => {
 
     if (data.data.message === "JWT error") {
       setErrorMessage("Error, you must be connected");
-      router
+      router;
     }
 
     if (data.data.message === "Fetch error") {
@@ -137,7 +134,7 @@ const TodoPage = () => {
         </div>
       )}
       {loading && <Loading />}
-      {errorMessage && <ErrorMessage message={errorMessage}/>}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 const Footer = () => {
   return (
-    <footer>
+    <footer className="bg-red-500">
       <a
         href="https://github.com/LucasTamaya/full-stack-todo-app"
         target="_blank"

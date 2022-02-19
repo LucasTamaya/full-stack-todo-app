@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Footer from "./footer";
 
 export default function Landing() {
   return (
@@ -10,13 +11,13 @@ export default function Landing() {
           </h1>
           <div className="flex gap-x-10">
             <Link href="/register">
-              <button className="border border-violet-700 w-40 py-3 text-violet-700 rounded-2xl transition ease-out hover:scale-105">
+              <button className="border border-violet-700 w-28 sm:w-40 py-3 text-violet-700 rounded-2xl transition ease-out hover:scale-105">
                 Register
               </button>
             </Link>
 
             <Link href="/login">
-              <button className="border border-violet-700 w-40 py-3 text-white rounded-2xl bg-violet-700 transition ease-out hover:scale-105">
+              <button className="border border-violet-700 w-28 sm:w-40 py-3 text-white rounded-2xl bg-violet-700 transition ease-out hover:scale-105">
                 Login
               </button>
             </Link>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 const axios = require("axios");
+const template = require("../utils/template");
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,9 +19,9 @@ export default function Login() {
 
     setLoading(true);
 
-    setErrorMessage("")
+    setErrorMessage("");
 
-    const res = await axios.post("http://localhost:3000/api/auth/login", {
+    const res = await axios.post(`${template}api/auth/login`, {
       email: email,
       password: password,
     });
